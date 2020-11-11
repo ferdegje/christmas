@@ -3,7 +3,7 @@ import { initAuth0 } from '@auth0/nextjs-auth0';
 export default initAuth0({
   domain: 'dev-uy4gfovj.eu.auth0.com',
   clientId: '0jNiVBJC67337168Gx5sq6ixiedwSzQE',
-  clientSecret: 'T42ML30dRDI-uqngLIr6L8OrgNmUM3PTW9v4z0o08BmT7T_tVkcJn2AQ1Dy7cOFC',
+  clientSecret: process.env.AUTH0_SECRET,
   scope: 'openid profile',
   redirectUri: 'http://localhost:3000/api/callback',
   postLogoutRedirectUri: 'http://localhost:3000/',
