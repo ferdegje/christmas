@@ -26,6 +26,13 @@ export default async function me(req, res) {
     return
   }
   switch(req.method) {
+    case 'POST':
+      for (const [key, value] of Object.entries(req.body)) {
+        item[key]=value;
+      }
+      item.save();
+      res.status(200).end(JSON.stringify(item, null, 2));
+      break;
     case 'GET':
       res.status(200).end(JSON.stringify(item, null, 2));
       break;
