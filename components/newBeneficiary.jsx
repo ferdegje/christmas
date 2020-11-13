@@ -6,12 +6,11 @@ class NewBeneficiary extends Component {
     e.preventDefault();
     const nickname = this.getNickname.value;
     const data = {
-      id: new Date(),
       editing:false,
       nickname
     }
     this.props.dispatch({
-      type:'ADD_BENEFICIARY',
+      type:'BENEFICIARY_ADD_REQUESTED',
       data});
     this.getNickname.value = '';
   }
