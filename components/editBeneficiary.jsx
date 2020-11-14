@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import Button from 'react-bootstrap/Button';
 
 class EditBeneficiary extends Component {
   handleEdit = (e) => {
@@ -13,13 +14,19 @@ class EditBeneficiary extends Component {
   }
   render() {
     return (
-    <div>
-      <form onSubmit={this.handleEdit}>
-        <input required type="text" ref={(input) => this.getNickname = input}
-        defaultValue={this.props.item.nickname} placeholder="Enter Nickname" /><br /><br />
-        <button>Update</button>
-      </form>
-    </div>
+      <>
+        <tr>
+
+          <td>
+            <input required type="text" ref={(input) => this.getNickname = input}
+            defaultValue={this.props.item.nickname} placeholder="Nom" />
+          </td>
+          <td>
+            <Button onClick={this.handleEdit}>Mettre a jour</Button>
+          </td>
+
+        </tr>
+      </>
     );
   }
 }

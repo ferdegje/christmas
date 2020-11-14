@@ -1,37 +1,69 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import OneBeneficiary from './oneBeneficiary.jsx';
+
 import EditBeneficiary from './editBeneficiary.jsx';
 import Alert from 'react-bootstrap/Alert';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 class AllBeneficiary extends Component {
   componentDidMount() {
     this.props.dispatch({type: 'BENEFICIARY_LIST_REQUESTED'});
   }
-  render() {
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const nickname = this.getNickname.value;
+    const data = {
+      editing:false,
+      nickname
+    }
+    this.props.dispatch({
+      type:'BENEFICIARY_ADD_REQUESTED',
+      data});
+    this.getNickname.value = '';
+  }
+
+  render() {
     return (
-    <div>
-    <Alert variant="success">
-      <Alert.Heading>Hey, nice to see you</Alert.Heading>
-      <p>
-        Aww yeah, you successfully read this important alert message. This example
-        text is going to run a bit longer so that you can see how spacing within an
-        alert works with this kind of content.
-      </p>
-      <hr />
-      <p className="mb-0">
-        Whenever you need to, be sure to use margin utilities to keep things nice
-        and tidy.
-      </p>
-    </Alert>
-      <h1>All Beneficiaries</h1>
-      {this.props.beneficiaries.map((item) => (
-        <div key={item.id}>
-          {item.editing ? <EditBeneficiary item={item} key={item.id} /> : <OneBeneficiary key={item.id} item={item} />}
-        </div>
-      ))}
-    </div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Editer</th>
+            <th>Supprimer</th>
+          </tr>
+        </thead>
+        <tbody>
+        {this.props.beneficiaries.beneficiary.map((item) => (
+          <>
+            {item.editing ? (
+              <EditBeneficiary item={item} />
+            ) : (
+              <tr>
+                <td>
+                  {item.nickname}
+                </td>
+                <td>
+                  <Button onClick={()=>this.props.dispatch({type:'EDIT_BENEFICIARY',id:item.id})}>Editer</Button>
+                </td>
+                <td>
+                  <Button onClick={()=>this.props.dispatch({type:'BENEFICIARY_DELETE_REQUESTED',id:item.id})}>Supprimer</Button>
+                </td>
+              </tr>
+            )}
+          </>
+        ))}
+          <tr>
+            <td colspan="2">
+              <input required type="text" placeholder="Enter Nickname" ref={(input)=>this.getNickname = input}/>
+            </td>
+            <td>
+              <Button onClick={this.handleSubmit}>Creer</Button>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
     );
    }
 }
