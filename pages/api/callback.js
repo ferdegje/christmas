@@ -6,15 +6,18 @@ export default async function callback(req, res) {
     await auth0.handleCallback(req, res, {
       onUserLoaded: async (req, res, session, state) => {
         console.log(session);
-        try {
-          let user = await User.findByPk(session.user.sub);
-        } catch(err) {
-          await User.create({
-            identifiant: session.user.sub,
-            given_name: session.user.given_name,
-            family_name: session.user.family_name,
-            locale: session.user.locale
-          });
+
+        const user = await User.findByPk(session.user.sub);
+        if (!user) {
+          const user = {
+            identifiant: session.user.sub
+          }
+          for (const [key, value] of Object.entries(session.user)) {
+            user[key]=value;
+          }
+          console.log("Creating a user with following details")
+          console.log(user)
+          await User.create(user);
         }
         return session;
       }

@@ -1,19 +1,23 @@
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga'
-import beneficiaryReducer from '../reducers/beneficiaryReducer';
-import beneficiarySaga from '../sagas/beneficiarySaga';
+import rootReducer from '../reducers/rootReducer';
+
+import rootSaga from '../sagas/rootSaga';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const sagaMiddleware = createSagaMiddleware()
 
 export default function App({ Component, pageProps }) {
   const store = createStore(
-    beneficiaryReducer,
+    rootReducer,
     applyMiddleware(sagaMiddleware)
   );
-  sagaMiddleware.run(beneficiarySaga)
+  sagaMiddleware.run(rootSaga)
 
   return (
+
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>

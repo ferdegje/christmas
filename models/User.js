@@ -10,6 +10,9 @@ User.init({
   },
   given_name: DataTypes.STRING,
   family_name: DataTypes.STRING,
+  nickname: DataTypes.STRING,
+  name: DataTypes.STRING,
+  email: DataTypes.STRING,
   locale: DataTypes.STRING,
   picture: DataTypes.TEXT
 }, { sequelize, modelName: 'user' });

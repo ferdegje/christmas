@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Container from 'react-bootstrap/Container';
 
 import Header from './header';
 import { UserProvider } from '../lib/user';
@@ -13,7 +14,7 @@ const Layout = ({ user, loading = false, children }) => (
     <Header />
 
     <main>
-      <div className="container">{children}</div>
+      <Container>{children}</Container>
     </main>
 
     <style jsx>{`

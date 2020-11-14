@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Card from 'react-bootstrap/Card';
+
+import UserProfile from '../components/userProfile';
 import Layout from '../components/layout';
 import { useFetchUser } from '../lib/user';
 
@@ -7,17 +10,18 @@ export default function Profile() {
   const { user, loading } = useFetchUser();
 
   return (
+
     <Layout user={user} loading={loading}>
-      <h1>Profile</h1>
-
-      {loading && <p>Loading profile...</p>}
-
-      {!loading && user && (
-        <>
-          <p>Profile:</p>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
-      )}
+    {!loading && user && (
+      <Card>
+        <Card.Header>Profil - {user.name}</Card.Header>
+        <Card.Body>
+          <Card.Text>
+            <UserProfile user={user}/>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    )}
     </Layout>
   );
 }
