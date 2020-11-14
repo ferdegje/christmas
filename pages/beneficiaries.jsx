@@ -2,7 +2,7 @@ import React from 'react';
 
 import Layout from '../components/layout';
 import NewBeneficiary from '../components/newBeneficiary';
-import AllBeneficiary from '../components/AllBeneficiary';
+import AllBeneficiary from '../components/allBeneficiary';
 import { useFetchUser } from '../lib/user';
 
 
