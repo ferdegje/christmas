@@ -17,10 +17,11 @@ export default async function me(req, res) {
   }
   switch(req.method) {
     case 'GET':
-      console.log(session);
+      const orderBy = req.query.order || "id";
       try {
         const gifts = await Beneficiary.findAll({
-          include: User
+          include: User,
+          order: [[orderBy, 'DESC']]
         });
         res.status(200).end(JSON.stringify(gifts, null, 2));
       } catch (error) {

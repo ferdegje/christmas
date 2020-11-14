@@ -41,14 +41,31 @@ function* addedBeneficiary(action) {
    }
 }
 
+function* updatedBeneficiary(action) {
+   try {
+      const url = `/api/beneficiary/${action.id}`;
+      const body = JSON.stringify(action.data)
+      console.log(`Body ${body}`);
+      const response = yield fetch(url, {method: 'POST', body: body,headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }}).then(resp => resp.json(),);
+      yield put({type: "BENEFICIARY_UPDATE_SUCCESS", data: response});
+   } catch (e) {
+      yield put({type: "ERROR", message: e.message});
+   }
+}
+
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
   Allows concurrent fetches of user.
 */
 function* beneficiarySaga() {
   yield takeEvery("BENEFICIARY_LIST_REQUESTED", fetchBeneficiaries);
-  yield takeEvery("BENEFICIARY_DELETE_REQUESTED", deletedBeneficiary)
-  yield takeEvery("BENEFICIARY_ADD_REQUESTED", addedBeneficiary)
+  yield takeEvery("BENEFICIARY_DELETE_REQUESTED", deletedBeneficiary);
+  yield takeEvery("BENEFICIARY_ADD_REQUESTED", addedBeneficiary);
+  yield takeEvery("BENEFICIARY_UPDATE_REQUESTED", updatedBeneficiary);
+
 }
 
 export default beneficiarySaga;

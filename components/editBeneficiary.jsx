@@ -9,7 +9,7 @@ class EditBeneficiary extends Component {
     const data = {
       nickname
     }
-    this.props.dispatch({ type: 'UPDATE_BENEFICIARY', id: this.props.item.id, data: data })
+    this.props.dispatch({ type: 'BENEFICIARY_UPDATE_REQUESTED', id: this.props.item.id, data: data })
   }
   render() {
     return (

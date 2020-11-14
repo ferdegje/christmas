@@ -9,8 +9,11 @@ const beneficiaryReducer = (state = [], action) => {
         return action.data;
       case 'BENEFICIARY_DELETE_SUCCESS':
         return state.filter((item)=>item.id !== action.id);
-      case 'UPDATE_BENEFICIARY':
-        return state.map((item)=>item.id === action.id ? {...item,nickname:action.data.nickname,editing:!item.editing}:item)
+      case 'BENEFICIARY_UPDATE_SUCCESS':
+        console.log("state");
+        console.log(state);
+        console.log(action);
+        return state.map((item)=>item.id === action.data.id ? {...item,nickname:action.data.nickname,editing:false}:item)
       default:
         console.log(action);
         return state;
