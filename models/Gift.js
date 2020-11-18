@@ -2,10 +2,20 @@ import sequelize from '../lib/db';
 import config from '../lib/config';
 const { Sequelize, Model, DataTypes } = require('sequelize');
 
+import Beneficiary from './Beneficiary';
+
 class Gift extends Model {}
 Gift.init({
-  username: DataTypes.STRING,
-  birthday: DataTypes.DATE
+  description: DataTypes.STRING,
+  url: DataTypes.STRING,
+  prix: DataTypes.DECIMAL,
+  target_beneficiary: {
+   type: Sequelize.INTEGER,
+   references: {
+     model: Beneficiary,
+     key: 'id',
+   }
+ },
 }, { sequelize, modelName: 'gift' });
 
 if (config.SEQUELIZE_SYNC) {
@@ -13,11 +23,6 @@ if (config.SEQUELIZE_SYNC) {
 
   (async () => {
     await sequelize.sync();
-    const jane = await Gift.create({
-      username: 'janedoe',
-      birthday: new Date(1980, 6, 20)
-    });
-    console.log(jane.toJSON());
   })();
 }
 
