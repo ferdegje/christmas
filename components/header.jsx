@@ -17,14 +17,21 @@ const Header = () => {
   return (
     <header>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Portail Ferdegue</Navbar.Brand>
+        <Navbar.Brand href="#home">Site Famille</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">Accueil</Nav.Link>
-            <Nav.Link href="/mylist">Ma liste</Nav.Link>
-            <Nav.Link href="/beneficiaries">Beneficiaires</Nav.Link>
-
+            {!loading &&
+              (user ? (
+                <>
+                  <Nav.Link href="/mylist">Ma liste</Nav.Link>
+                  <Nav.Link href="/beneficiaries">Beneficiaires</Nav.Link>
+                </>
+              ) : (
+                <></>
+              ))
+            }
           </Nav>
           <Nav>
           {!loading &&
