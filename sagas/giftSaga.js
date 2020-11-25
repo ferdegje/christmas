@@ -5,7 +5,6 @@ const keywordAction = "GIFT";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 export function* fetchGifts(action) {
-  console.log(action);
   let query = `target_user=${action.targetUser.identifiant}`;
    try {
       const data = yield fetch(`${apiEndpoint}?${query}`).then(response => response.json(), );
@@ -58,5 +57,16 @@ export function* updatedGift(action) {
       yield put({type: `${keywordAction}_UPDATE_SUCCESS`, data: response});
    } catch (e) {
       yield put({type: "ERROR", message: e.message});
+   }
+}
+
+export function* getDetailsGift(action) {
+  let query = `url=${action.data.url}`;
+   try {
+      const data = yield fetch(`/api/parser?${query}`).then(response => response.json(), );
+      console.log(data);
+      yield put({type: `GIFT_URLDETAILS_SUCCESS`, data: data});
+   } catch (e) {
+      yield put({type: `GIFT_URLDETAILS_ERROR`, message: e.message});
    }
 }

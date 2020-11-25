@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+
+
 class GiftAdd extends Component {
   handleEdit = (e) => {
     e.preventDefault();
@@ -27,7 +29,20 @@ class GiftAdd extends Component {
     }
 
   }
+
+  async handleUrl(e, ctx) {
+    e.preventDefault();
+    const data = {
+      url: e.target.value
+    }
+    if (e.target.value !== '') {
+        ctx.props.dispatch({ type: 'GIFT_URLDETAILS_REQUESTED', data: data })
+    }
+  }
+
   render() {
+    console.log("WAHOU");
+    console.log(this.props.gifto);
     return (
       <div>
         {this.props.displayAlert.user.displayAlert ? (
@@ -39,6 +54,23 @@ class GiftAdd extends Component {
           </Alert>
         ):(<div></div>)}
         <Form onSubmit={this.handleEdit}>
+
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>URL</Form.Label>
+            <Form.Control type="url" placeholder="Adresse web"  defaultValue={this.props.gift.url} ref={(input) => this.getUrl} onChange={(e) => this.handleUrl(e, this)}/>
+            <Form.Text className="text-muted">
+              Vos donnnees ne sont pas partagees.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Titre</Form.Label>
+            <Form.Control type="titre" placeholder="Titre" defaultValue={this.props.gift.title} ref={(input) => this.getTitle = input}/>
+            <Form.Text className="text-muted">
+              Vos donnnees ne sont pas partagees.
+            </Form.Text>
+          </Form.Group>
+
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Description</Form.Label>
             <Form.Control type="description" placeholder="Description" defaultValue={this.props.gift.description} ref={(input) => this.getDescription = input}/>
@@ -47,13 +79,7 @@ class GiftAdd extends Component {
             </Form.Text>
           </Form.Group>
 
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>URL</Form.Label>
-            <Form.Control type="url" placeholder="Adresse web"  defaultValue={this.props.gift.url} ref={(input) => this.getUrl = input}/>
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
-          </Form.Group>
+
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Prix (en Euros)</Form.Label>
@@ -82,7 +108,8 @@ class GiftAdd extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        displayAlert: state
+        displayAlert: state,
+        gift: state.gift
     }
 }
 
