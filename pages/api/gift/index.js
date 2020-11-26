@@ -1,7 +1,5 @@
 import auth0 from '../../../lib/auth0';
-import Beneficiary from '../../../models/Beneficiary';
-import User from '../../../models/User';
-import Gift from '../../../models/Gift';
+import {Beneficiary, User, Gift} from '../../../models';
 
 export default async function me(req, res) {
   const session = await auth0.getSession(req);
@@ -35,8 +33,9 @@ export default async function me(req, res) {
       }
       break;
     case 'POST':
-      console.log(req.body);
-      const a = await Gift.create({...req.body, user});
+      const objPayload = {...req.body, user: user.identifiant}
+      console.log(objPayload);
+      const a = await Gift.create(objPayload);
       let answer = {
         ...a.toJSON()
       }

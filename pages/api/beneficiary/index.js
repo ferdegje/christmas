@@ -1,6 +1,5 @@
 import auth0 from '../../../lib/auth0';
-import Beneficiary from '../../../models/Beneficiary';
-import User from '../../../models/User';
+import {Beneficiary, User} from '../../../models';
 
 export default async function me(req, res) {
   const session = await auth0.getSession(req);
@@ -26,9 +25,16 @@ export default async function me(req, res) {
       try {
         const gifts = await Beneficiary.findAll({
           include: User,
-          order: [[orderBy, 'DESC']]
+          order: [[orderBy, 'DESC']],
         });
-        res.status(200).end(JSON.stringify(gifts, null, 2));
+        res.status(200).end(JSON.stringify(gifts.filter(item => {
+          // console.log(">>item", JSON.stringify(item, null, 3))
+          // console.log(">>user", JSON.stringify(user, null, 3))
+          // console.log(">>user.identifiant", user.identifiant)
+          // console.log(">>item.users.map(k => k.identifiant)", item.users.map(k => k.identifiant))
+          return item.users.map(k => k.identifiant).includes(user.identifiant);
+
+        }), null, 2));
       } catch (error) {
         console.error(error);
         res.status(error.status || 500).end(error.message);

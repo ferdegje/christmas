@@ -1,6 +1,5 @@
 import auth0 from '../../../lib/auth0';
-import Beneficiary from '../../../models/Beneficiary';
-import User from '../../../models/User';
+import {Beneficiary, User} from '../../../models';
 
 export default async function me(req, res) {
   const {

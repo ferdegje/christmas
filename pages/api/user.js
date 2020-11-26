@@ -1,5 +1,5 @@
 import auth0 from '../../lib/auth0';
-import User from '../../models/User';
+import {User} from '../../models';
 
 export default async function me(req, res) {
   const session = await auth0.getSession(req);
