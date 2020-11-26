@@ -8,7 +8,8 @@ import Button from 'react-bootstrap/Button';
 
 class AllBeneficiary extends Component {
   componentDidMount() {
-    this.props.dispatch({type: 'BENEFICIARY_LIST_REQUESTED'});
+    const data = {'where': 'mine'};
+    this.props.dispatch({type: 'BENEFICIARY_LIST_REQUESTED', data});
   }
 
   handleSubmit = (e) => {

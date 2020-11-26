@@ -3,7 +3,10 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 export function* fetchBeneficiaries(action) {
    try {
-      const data = yield fetch("/api/beneficiary").then(response => response.json(), );
+      var params = new URLSearchParams();
+      for(var key in action.data)
+        params.append(key, action.data[key]);
+      const data = yield fetch("/api/beneficiary?"+params.toString()).then(response => response.json(), );
       yield put({type: "BENEFICIARY_LIST_SUCCESS", data: data});
    } catch (e) {
       yield put({type: "BENEFICIARY_LIST_ERROR", message: e.message});

@@ -27,14 +27,16 @@ export default async function me(req, res) {
           include: User,
           order: [[orderBy, 'DESC']],
         });
-        res.status(200).end(JSON.stringify(gifts.filter(item => {
-          // console.log(">>item", JSON.stringify(item, null, 3))
-          // console.log(">>user", JSON.stringify(user, null, 3))
-          // console.log(">>user.identifiant", user.identifiant)
-          // console.log(">>item.users.map(k => k.identifiant)", item.users.map(k => k.identifiant))
-          return item.users.map(k => k.identifiant).includes(user.identifiant);
-
-        }), null, 2));
+        var results;
+        console.log(">>req.query.where", req.query.where)
+        switch(req.query.where) {
+          case "mine":
+            results = gifts.filter(item => item.users.map(k => k.identifiant).includes(user.identifiant));
+            break
+          default:
+            results = gifts;
+        }
+        res.status(200).end(JSON.stringify(results), null, 2);
       } catch (error) {
         console.error(error);
         res.status(error.status || 500).end(error.message);
