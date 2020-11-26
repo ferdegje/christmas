@@ -31,7 +31,8 @@ export default async function callback(req, res) {
           // console.log(user)
           var u = await User.create(user);
           var a = await Beneficiary.create({
-            nickname: u.nickname
+            nickname: u.name,
+            user: u.identifiant,
           });
           a.addUser(u);
         }

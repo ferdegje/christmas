@@ -48,15 +48,25 @@ export function* addedGift(action) {
 export function* updatedGift(action) {
    try {
       const url = `${apiEndpoint}/${action.id}`;
+      console.log('>>>GIFT_UPDATE_REQUESTED.action', JSON.stringify(action.data, null, 2))
       const body = JSON.stringify(action.data)
-      console.log(`Body ${body}`);
-      const response = yield fetch(url, {method: 'POST', body: body,headers: {
+      const response = yield fetch(url, {method: 'POST', body: body, headers: {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }}).then(resp => resp.json(),);
       yield put({type: `${keywordAction}_UPDATE_SUCCESS`, data: response});
    } catch (e) {
       yield put({type: "ERROR", message: e.message});
+   }
+}
+
+export function* fetchDetailsGift(action) {
+  // console.log(">>>GIFT_DETAIL_REQUESTED.action", JSON.stringify(action, null, 2));
+   try {
+      const data = yield fetch(`${apiEndpoint}/${action.id}`).then(response => response.json(), );
+      yield put({type: `${keywordAction}_DETAIL_SUCCESS`, data: data});
+   } catch (e) {
+      yield put({type: `${keywordAction}_DETAIL_ERROR`, message: e.message});
    }
 }
 

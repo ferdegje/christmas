@@ -5,22 +5,21 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 
-import UserProfile from '../components/userProfile';
-import GiftList from '../components/giftList';
-import GiftAdd from '../components/giftAdd';
+import UserProfile from '../../components/userProfile';
+import GiftList from '../../components/giftList';
+import GiftAdd from '../../components/giftAdd';
 
-import Layout from '../components/layout';
-import { useFetchUser } from '../lib/user';
+import Layout from '../../components/layout';
+import { useFetchUser } from '../../lib/user';
 
 export default function Profile() {
   const { user, loading } = useFetchUser();
 
   return (
-
     <Layout user={user} loading={loading}>
     {!loading && user && (
       <>
-        <GiftAdd gift=""/>
+        <GiftAdd gift="" user={user} />
         <GiftList targetUser={user}></GiftList>
       </>
     )}

@@ -26,7 +26,22 @@ export default async function me(req, res) {
         const gifts = await Gift.findAll({
           order: [[orderBy, 'DESC']]
         });
-        res.status(200).end(JSON.stringify(gifts, null, 2));
+        const allUsers = await User.findAll();
+        const allBeneficiaries = await Beneficiary.findAll({
+          include: User
+        });
+        const resultValues = gifts
+          .map(item => {
+            item.user = allUsers.filter(a => a.identifiant==item.user)[0];
+            // console.log(">>>usero", JSON.stringify(usero, null, 2))
+            return item;
+          })
+          .map(item => {
+            item.target_beneficiary = allBeneficiaries.filter(a => a.id==item.target_beneficiary)[0];
+            // console.log(">>>usero", JSON.stringify(usero, null, 2))
+            return item;
+          });
+        res.status(200).end(JSON.stringify(resultValues, null, 2));
       } catch (error) {
         console.error(error);
         res.status(error.status || 500).end(error.message);

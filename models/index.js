@@ -59,7 +59,25 @@ Gift.init({
  },
 }, { sequelize, modelName: 'gift' });
 
-
+export class Comment extends Model {}
+Comment.init({
+  message: DataTypes.STRING,
+  user: {
+    type: Sequelize.STRING,
+    references: {
+      model: User,
+      key: 'identifiant',
+    }
+  },
+  hidden: DataTypes.BOOLEAN,
+  gift: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Gift,
+      key: 'id',
+    }
+  }
+}, { sequelize, modelName: 'gift' });
 
 const User_Beneficiaries = sequelize.define('User_Beneficiaries', {}, { timestamps: false });
 Beneficiary.belongsToMany(User, { through: User_Beneficiaries });

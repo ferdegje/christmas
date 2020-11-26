@@ -5,6 +5,10 @@ import EditBeneficiary from './editBeneficiary.jsx';
 import Alert from 'react-bootstrap/Alert';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import CardColumns from 'react-bootstrap/CardColumns';
+import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
+import Badge from 'react-bootstrap/Badge';
 
 class GiftList extends Component {
   componentDidMount() {
@@ -25,52 +29,59 @@ class GiftList extends Component {
   }
 
   render() {
-    return (
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Editer</th>
-            <th>Supprimer</th>
-          </tr>
-        </thead>
-        <tbody>
-        {this.props.giftList.beneficiary.map((item) => (
-          <>
-            {item.editing ? (
-              <EditBeneficiary item={item} />
-            ) : (
-              <tr>
-                <td>
-                  {item.nickname}
-                </td>
-                <td>
-                  <Button onClick={()=>this.props.dispatch({type:'EDIT_BENEFICIARY',id:item.id})}>Editer</Button>
-                </td>
-                <td>
-                  <Button onClick={()=>this.props.dispatch({type:'BENEFICIARY_DELETE_REQUESTED',id:item.id})}>Supprimer</Button>
-                </td>
-              </tr>
-            )}
-          </>
-        ))}
-          <tr>
-            <td colSpan="2">
-              <input required type="text" placeholder="Enter Nickname" ref={(input)=>this.getNickname = input}/>
-            </td>
-            <td>
-              <Button onClick={this.handleSubmit}>Creer</Button>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
-    );
+    console.log(">>this.props.gift", JSON.stringify(this.props.gift, null, 2));
+    if (this.props.gift.list) {
+      return (
+        <CardColumns>
+          {this.props.gift.list.map((item) => (
+              <Card>
+                {item && item.picture ? (
+                    <Card.Img variant="top" src={item.picture} />
+                ) : (<></>)}
+                <Card.Body>
+                  <Card.Title>
+                    {item.title}&nbsp;
+                    {(item.prix) ? (
+                        <Badge variant="secondary">{item.prix}€</Badge>
+                    ) : (
+                      <></>
+                    )}
+
+                  </Card.Title>
+                  <Card.Text>{item.description}</Card.Text>
+                  <Button variant="primary" href={'/list/' + item.id}>>> Details</Button>
+                </Card.Body>
+                <Card.Footer className="text-muted">
+                  Pour {item.target_beneficiary.nickname}
+                  {(item.target_beneficiary.user && item.user.identifiant==item.target_beneficiary.user) ? (
+                    <></>
+                  ) : (
+                    <footer className="blockquote-footer">
+                      <small className="text-muted">
+                        Commande par <cite title="Source Title">{item.user.name}</cite>
+                      </small>
+                    </footer>
+
+                  )}
+                </Card.Footer>
+              </Card>
+            ))}
+        </CardColumns>
+      );
+    } else {
+      return (
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      )
+    }
+
    }
 }
 
 const mapStateToProps = (state) => {
     return {
-        giftList: state
+        gift: state.gift
     }
 }
 

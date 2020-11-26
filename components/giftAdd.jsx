@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-
+import Card from 'react-bootstrap/Card';
+import Accordion from 'react-bootstrap/Accordion';
 
 
 class GiftAdd extends Component {
@@ -28,10 +29,10 @@ class GiftAdd extends Component {
       target_beneficiary
     }
     console.log(data);
-    if (!this.props.gift.id) {
-      this.props.dispatch({ type: 'GIFT_ADD_REQUESTED', data: data })
+    if (this.props.gift.detail.id) {
+      this.props.dispatch({ type: 'GIFT_UPDATE_REQUESTED', id: this.props.gift.detail.id, data: data })
     } else {
-      this.props.dispatch({ type: 'GIFT_UPDATE_REQUESTED', id: this.props.gift.id, data: data })
+      this.props.dispatch({ type: 'GIFT_ADD_REQUESTED', data: data })
     }
   }
 
@@ -46,70 +47,115 @@ class GiftAdd extends Component {
   }
 
   render() {
+    console.log(">>GiftAdd.props", JSON.stringify(this.props, null, 2));
+    const canEdit = !this.props.gift.detail || (this.props.gift.detail && this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant));
+    const detail = this.props.gift.detail ? this.props.gift.detail : {
+      'url': "",
+      'title': "",
+      'description': "",
+      'prix': "",
+      'target_beneficiary': {
+        'id': 0
+      }
+    };
+
     return (
-      <div>
-        {this.props.displayAlert.user.displayAlert ? (
+      <>
+      <Accordion defaultActiveKey="1">
+  <Card>
+    <Card.Header>
+      {canEdit ? (
+        detail.id ? (
+          <Accordion.Toggle as={Button} variant="link" eventKey="0">
+            Mise a jour
+          </Accordion.Toggle>
+        ) : (
+          <Accordion.Toggle as={Button} variant="link" eventKey="0">
+            Ajouter un cadeau
+          </Accordion.Toggle>
+        )
+      ) : (
+        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+          Détails du cadeau
+        </Accordion.Toggle>
+      )}
+
+    </Card.Header>
+    <Accordion.Collapse eventKey="0">
+      <Card.Body>
+        {this.props.gift.updateOrCreate == "success" ? (
           <Alert variant="success">
             <Alert.Heading>Changements enregistres</Alert.Heading>
             <p>
-              Les changements de votre profil sont maintenant enregistres.
+              Les changements sont maintenant enregistres.
             </p>
           </Alert>
-        ):(<div></div>)}
+        ):(<></>)}
         <Form onSubmit={this.handleEdit}>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>URL</Form.Label>
-            <Form.Control type="url" placeholder="Adresse web"  defaultValue={this.props.gift.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
+            {(this.props.gift.url && this.props.gift.url.url) ? (
+              <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={this.props.gift.url.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+            ) : (
+              <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={detail.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+            )}
           </Form.Group>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Titre</Form.Label>
-            <Form.Control type="titre" placeholder="Titre" defaultValue={this.props.gift.title} ref={(input) => this.getTitle = input}/>
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
+            {(this.props.gift.url && this.props.gift.url.title) ? (
+              <Form.Control type="titre" placeholder="Titre"  readOnly={!canEdit} defaultValue={this.props.gift.url.title} ref={(input) => this.getTitle = input}/>
+            ) : (
+              <Form.Control type="titre" placeholder="Titre"  readOnly={!canEdit} defaultValue={detail.title} ref={(input) => this.getTitle = input}/>
+            )}
           </Form.Group>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" rows={3} type="description" placeholder="Description" defaultValue={this.props.gift.description} ref={(input) => this.getDescription = input}/>
-
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
+            {(this.props.gift.url && this.props.gift.url.description) ? (
+              <Form.Control as="textarea" rows={3} type="description"  readOnly={!canEdit} placeholder="Description" defaultValue={this.props.gift.url.description} ref={(input) => this.getDescription = input}/>
+            ): (
+              <Form.Control as="textarea" rows={3} type="description"  readOnly={!canEdit} placeholder="Description" defaultValue={detail.description} ref={(input) => this.getDescription = input}/>
+            )}
           </Form.Group>
 
 
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Prix (en Euros)</Form.Label>
-            <Form.Control type="nickname" placeholder="Prix"  defaultValue={this.props.gift.prix} ref={(input) => this.getPrix = input}/>
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
+            <Form.Control type="prix" placeholder="Prix" readOnly={!canEdit} defaultValue={detail.prix} ref={(input) => this.getPrix = input}/>
           </Form.Group>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Pour</Form.Label>
-            <Form.Control as="select" type="name" placeholder="Pour"  defaultValue={this.props.gift.target_beneficiary} ref={(input) => this.getTargetBeneficiary = input}>
-            {this.props.beneficiary.map((value, index) => {
-              return <option value={value.id}>{value.nickname}</option>
-            })}
+            <Form.Control as="select" type="name" placeholder="Pour" readOnly={!canEdit} value={detail.target_beneficiary.id} ref={(input) => this.getTargetBeneficiary = input}>
+            {this.props.beneficiary.map((value, index) => <option value={value.id}>{value.nickname}</option>)}
             </Form.Control>
-            <Form.Text className="text-muted">
-              Vos donnnees ne sont pas partagees.
-            </Form.Text>
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Ajouter
-          </Button>
+
+            {canEdit ? (
+              detail.id ? (
+              <Button variant="primary" type="submit">
+                Mettre a jour
+              </Button>
+            ) : (
+              <Button variant="primary" type="submit">
+                Ajouter
+              </Button>
+            )
+          ) : (
+            <></>
+          )}
+
         </Form>
-      </div>
+        </Card.Body>
+      </Accordion.Collapse>
+    </Card>
+    </Accordion>
+    <br />
+    </>
     );
   }
 }

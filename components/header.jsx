@@ -25,7 +25,7 @@ const Header = () => {
             {!loading &&
               (user ? (
                 <>
-                  <Nav.Link href="/mylist">Ma liste</Nav.Link>
+                  <Nav.Link href="/list">Ma liste</Nav.Link>
                   <Nav.Link href="/beneficiaries">Beneficiaires</Nav.Link>
                 </>
               ) : (

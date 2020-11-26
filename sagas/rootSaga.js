@@ -2,7 +2,7 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import { fetchBeneficiaries, deletedBeneficiary, addedBeneficiary, updatedBeneficiary } from './beneficiarySaga';
-import { fetchGifts, deletedGift, addedGift, updatedGift, getDetailsGift } from './giftSaga';
+import { fetchGifts, deletedGift, addedGift, updatedGift, getDetailsGift, fetchDetailsGift } from './giftSaga';
 import { updatedUser } from './userSaga';
 // import { userSaga } from './userSaga';
 
@@ -17,4 +17,5 @@ export default function* rootSaga() {
   yield takeEvery("GIFT_ADD_REQUESTED", addedGift);
   yield takeEvery("GIFT_UPDATE_REQUESTED", updatedGift);
   yield takeEvery("GIFT_URLDETAILS_REQUESTED", getDetailsGift);
+  yield takeEvery("GIFT_DETAIL_REQUESTED", fetchDetailsGift);
 }
