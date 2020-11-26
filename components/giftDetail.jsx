@@ -32,12 +32,13 @@ class GiftDetail extends Component {
   }
 
   render() {
-    console.log(">>this.props", JSON.stringify(this.props, null, 2));
-    const enableGifting = !this.props.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
+    // console.log(">>GiftDetail.props", JSON.stringify(this.props, null, 2));
+
     const giftAddProps = {
       'details': this.props.detail
     }
     if (this.props.detail) {
+      const enableGifting = !this.props.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
       return <>
         <Head>
           <title>({this.props.detail.target_beneficiary.nickname}) {this.props.detail.title}</title>

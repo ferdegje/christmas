@@ -47,7 +47,7 @@ class GiftAdd extends Component {
   }
 
   render() {
-    console.log(">>GiftAdd.props", JSON.stringify(this.props, null, 2));
+    // console.log(">>GiftAdd.props", JSON.stringify(this.props, null, 2));
     const canEdit = !this.props.gift.detail || (this.props.gift.detail && this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant));
     const detail = this.props.gift.detail ? this.props.gift.detail : {
       'url': "",
@@ -129,7 +129,7 @@ class GiftAdd extends Component {
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Pour</Form.Label>
-            <Form.Control as="select" type="name" placeholder="Pour" readOnly={!canEdit} value={detail.target_beneficiary.id} ref={(input) => this.getTargetBeneficiary = input}>
+            <Form.Control as="select" type="name" placeholder="Pour" readOnly={!canEdit} defaultValue={detail.target_beneficiary.id} ref={(input) => this.getTargetBeneficiary = input}>
             {this.props.beneficiary.map((value, index) => <option value={value.id}>{value.nickname}</option>)}
             </Form.Control>
           </Form.Group>

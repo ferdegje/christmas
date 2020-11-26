@@ -77,7 +77,7 @@ Comment.init({
       key: 'id',
     }
   }
-}, { sequelize, modelName: 'gift' });
+}, { sequelize, modelName: 'comment' });
 
 const User_Beneficiaries = sequelize.define('User_Beneficiaries', {}, { timestamps: false });
 Beneficiary.belongsToMany(User, { through: User_Beneficiaries });
