@@ -13,6 +13,14 @@ class GiftAdd extends Component {
     this.props.dispatch({type: 'BENEFICIARY_LIST_REQUESTED'});
   }
 
+  handleDelete = (e) => {
+    e.preventDefault();
+    if (confirm("Voulez vous vraiment supprimer ce cadeau?")) {
+        this.props.dispatch({ type: 'GIFT_DELETE_REQUESTED', id: this.props.gift.detail.id })
+    }
+
+  }
+
   handleEdit = (e) => {
     e.preventDefault();
 
@@ -29,7 +37,7 @@ class GiftAdd extends Component {
       target_beneficiary
     }
     console.log(data);
-    if (this.props.gift.detail.id) {
+    if (this.props.gift && this.props.gift.detail && this.props.gift.detail.id) {
       this.props.dispatch({ type: 'GIFT_UPDATE_REQUESTED', id: this.props.gift.detail.id, data: data })
     } else {
       this.props.dispatch({ type: 'GIFT_ADD_REQUESTED', data: data })
@@ -48,7 +56,7 @@ class GiftAdd extends Component {
 
   render() {
     // console.log(">>GiftAdd.props", JSON.stringify(this.props, null, 2));
-    const canEdit = !this.props.gift.detail || (this.props.gift.detail && this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant));
+    const canEdit = !this.props.gift.detail || (this.props.gift.detail && (this.props.gift.detail.user.identifiant == this.props.user.identifiant || this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant)));
     const detail = this.props.gift.detail ? this.props.gift.detail : {
       'url': "",
       'title': "",
@@ -67,7 +75,7 @@ class GiftAdd extends Component {
       {canEdit ? (
         detail.id ? (
           <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            Mise a jour
+            {this.props.gift.detail.title} - Mise a jour
           </Accordion.Toggle>
         ) : (
           <Accordion.Toggle as={Button} variant="link" eventKey="0">
@@ -76,7 +84,7 @@ class GiftAdd extends Component {
         )
       ) : (
         <Accordion.Toggle as={Button} variant="link" eventKey="0">
-          Détails du cadeau
+          {this.props.gift.detail.title} - Détails du cadeau
         </Accordion.Toggle>
       )}
 
@@ -137,9 +145,14 @@ class GiftAdd extends Component {
 
             {canEdit ? (
               detail.id ? (
-              <Button variant="primary" type="submit">
-                Mettre a jour
-              </Button>
+                <>
+                  <Button variant="primary" type="submit">
+                    Mettre a jour
+                  </Button>{' '}
+                  <Button variant="danger" onClick={this.handleDelete}>
+                    Supprimer
+                  </Button>
+                </>
             ) : (
               <Button variant="primary" type="submit">
                 Ajouter

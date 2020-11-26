@@ -6,6 +6,11 @@ const giftReducer = (state = [], action) => {
         list.unshift(action.data);
         return {...state, list, updateOrCreate: "success" };
       case 'GIFT_UPDATE_SUCCESS':
+        console.log(">>>GIFT_UPDATE_SUCCESS.action", action);
+        console.log(">>>GIFT_UPDATE_SUCCESS.state", state);
+        state.detail = action.data.item;
+        state.detail.user = action.data.user;
+        state.detail.target_beneficiary = action.data.target_beneficiary;
         return {...state, updateOrCreate: "success"}
       case 'GIFT_UPDATE_REQUESTED':
         return {...state, updateOrCreate: "attempt"}

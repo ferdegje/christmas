@@ -40,16 +40,16 @@ class GiftList extends Component {
                 ) : (<></>)}
                 <Card.Body>
                   <Card.Title>
-                    {item.title}&nbsp;
-                    {(item.prix) ? (
-                        <Badge variant="secondary">{item.prix}€</Badge>
-                    ) : (
-                      <></>
-                    )}
+
+                      <a href={'/list/' + item.id}>{item.title}</a>&nbsp;
+                      {(item.prix) ? (
+                          <Badge variant="secondary">{item.prix}€</Badge>
+                      ) : (
+                        <></>
+                      )}
 
                   </Card.Title>
                   <Card.Text>{item.description}</Card.Text>
-                  <Button variant="primary" href={'/list/' + item.id}>>> Details</Button>
                 </Card.Body>
                 <Card.Footer className="text-muted">
                   {item.target_beneficiary ? (

@@ -52,6 +52,7 @@ Gift.init({
   },
   target_beneficiary: {
    type: Sequelize.INTEGER,
+   allowNull: false,
    references: {
      model: Beneficiary,
      key: 'id',

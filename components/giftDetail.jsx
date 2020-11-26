@@ -18,17 +18,15 @@ class GiftDetail extends Component {
     this.props.dispatch({type: 'GIFT_DETAIL_REQUESTED', id: this.props.id});
   }
 
-  handleSubmit = (e) => {
+  handleDelete = (e) => {
     e.preventDefault();
-    const nickname = this.getNickname.value;
-    const data = {
-      editing:false,
-      nickname
+    var a = confirm("Etes vous sur de vouloir supprimer ce cadeau?")
+    if (a) {
+      const id = this.props.detail.id;
+      this.props.dispatch({
+        type:'GIFT_DELETE_REQUESTED',
+        id});
     }
-    this.props.dispatch({
-      type:'BENEFICIARY_ADD_REQUESTED',
-      data});
-    this.getNickname.value = '';
   }
 
   render() {
@@ -37,7 +35,7 @@ class GiftDetail extends Component {
     const giftAddProps = {
       'details': this.props.detail
     }
-    if (this.props.detail) {
+    if (this.props.detail && this.props.detail.target_beneficiary) {
       const enableGifting = !this.props.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
       return <>
         <Head>
@@ -48,9 +46,12 @@ class GiftDetail extends Component {
       </>;
     } else {
       return (
+        <>
+        <Button onClick={this.handleDelete}>Supprimer ce cadeau</Button>
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
+        </>
       );
     }
 
