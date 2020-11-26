@@ -52,8 +52,13 @@ class GiftList extends Component {
                   <Button variant="primary" href={'/list/' + item.id}>>> Details</Button>
                 </Card.Body>
                 <Card.Footer className="text-muted">
-                  Pour {item.target_beneficiary.nickname}
-                  {(item.target_beneficiary.user && item.user.identifiant==item.target_beneficiary.user) ? (
+                  {item.target_beneficiary ? (
+                    <>Pour {item.target_beneficiary.nickname}</>
+                  ) : (
+                    <></>
+                  )}
+
+                  {(item.target_beneficiary && item.target_beneficiary.user && item.user.identifiant==item.target_beneficiary.user) ? (
                     <></>
                   ) : (
                     <footer className="blockquote-footer">

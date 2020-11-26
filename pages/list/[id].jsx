@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table';
 
 import UserProfile from '../../components/userProfile';
 import GiftList from '../../components/giftList';
-import GiftDetail from '../../components/GiftDetail';
+import GiftDetail from '../../components/giftDetail';
 
 import Layout from '../../components/layout';
 import { useFetchUser } from '../../lib/user';
