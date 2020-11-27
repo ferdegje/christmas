@@ -16,6 +16,7 @@ import Col from 'react-bootstrap/Col';
 
 import GiftAdd from './giftAdd';
 import GiftComments from './giftComments';
+import GiftDonation from './giftDonation';
 
 class GiftDetail extends Component {
   componentDidMount() {
@@ -48,9 +49,11 @@ class GiftDetail extends Component {
         <GiftAdd gift={giftAddProps} user={this.props.user} />
         <Container>
           <Row>
-            <Col>Give</Col>
             <Col>
-              <GiftComments />
+              <GiftDonation user={this.props.user} />
+            </Col>
+            <Col>
+              <GiftComments user={this.props.user} />
             </Col>
           </Row>
         </Container>

@@ -19,6 +19,11 @@ const giftReducer = (state = [], action) => {
         return {...state, list: action.data};
       case 'GIFT_DETAIL_SUCCESS':
         return {...state, detail: action.data};
+      case 'GIFT_PAYLOAD':
+        for (var k in action.data) {
+          state[k] = action.data[k];
+        }
+        return {...state};
       case 'GIFT_URLDETAILS_SUCCESS':
         var url = {
           description: action.data.description,

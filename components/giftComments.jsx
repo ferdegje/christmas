@@ -33,10 +33,9 @@ class GiftComments extends Component {
   }
 
   render() {
-    // console.log(">>GiftComments.props", JSON.stringify(this.props, null, 2));
+    // console.log(">>GiftComments.props", this.props);
 
     if (this.props.gift.detail) {
-
       const enableGifting = !this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
       return (
         <>
@@ -50,9 +49,16 @@ class GiftComments extends Component {
               <CommentsList type="public" />
             </Tab>
             <Tab eventKey="private" title="Secrets">
-              <br />
-              La conversation ci dessous est invisible a {this.props.gift.detail.target_beneficiary.users.map(k => k.name).join(",")}.
-              <CommentsList type="private" />
+              {(this.props.gift && this.props.gift.detail && this.props.user && this.props.gift.detail.target_beneficiary.users.filter(x=>x.identifiant==this.props.user.identifiant).length != 0) ? (
+                <>Cette conversation ne vous est pas accessible car le cadeau est pour vous ou pour un profil que vous controlez.</>
+              ) : (
+                <>
+                  <br />
+                  La conversation ci dessous est invisible a {this.props.gift.detail.target_beneficiary.users.map(k => k.name).join(",")}.
+                  <CommentsList type="private" />
+                </>
+              )}
+
             </Tab>
           </Tabs>
         </>
@@ -72,8 +78,7 @@ class GiftComments extends Component {
 const mapStateToProps = (state) => {
     return {
         comments: state.comments,
-        gift: state.gift,
-        user: state.user,
+        gift: state.gift
     }
 }
 

@@ -29,12 +29,14 @@ class GiftAdd extends Component {
     const url = this.getUrl.value;
     const prix = parseFloat(this.getPrix.value);
     const target_beneficiary = this.getTargetBeneficiary.value;
+    const confidentiel = this.props.gift.confidentiel;
     const data = {
       description,
       title,
       url,
       prix,
-      target_beneficiary
+      target_beneficiary,
+      confidentiel,
     }
     console.log(data);
     if (this.props.gift && this.props.gift.detail && this.props.gift.detail.id) {
@@ -54,7 +56,23 @@ class GiftAdd extends Component {
     }
   }
 
+  handleConfidentielClick = (e) => {
+    var confidentiel = !this.props.gift.confidentiel;
+    var data = {
+      confidentiel
+    }
+    this.props.dispatch({ type: 'GIFT_PAYLOAD', data});
+  }
+
+  handleSelectionOfPour = (e) => {
+    e.preventDefault();
+    this.displayOptionConfidentielle = this.props.beneficiary.filter(x=>x.id==e.target.value)[0].users.filter(x=>x.identifiant==this.props.user.identifiant).length == 0;
+    this.props.dispatch({ type: 'GIFT_UPDATE_REQUESTED'});
+  }
+
   render() {
+    //console.log(">>>this.displayOptionConfidentielle", this.displayOptionConfidentielle)
+
     // console.log(">>GiftAdd.props", JSON.stringify(this.props, null, 2));
     const canEdit = !this.props.gift.detail || (this.props.gift.detail && (this.props.gift.detail.user.identifiant == this.props.user.identifiant || this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant)));
     const detail = this.props.gift.detail ? this.props.gift.detail : {
@@ -103,10 +121,14 @@ class GiftAdd extends Component {
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>URL</Form.Label>
-            {(this.props.gift.url && this.props.gift.url.url) ? (
-              <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={this.props.gift.url.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+            {canEdit ? (
+              (this.props.gift.url && this.props.gift.url.url) ? (
+                <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={this.props.gift.url.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+              ) : (
+                <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={detail.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+              )
             ) : (
-              <Form.Control type="url" placeholder="Adresse web"  readOnly={!canEdit} defaultValue={detail.url} ref={(input) => this.getUrl = input} onChange={(e) => this.handleUrl(e, this)}/>
+              <>:{" "}<a href={detail.url} target="_blank">{detail.url}</a></>
             )}
           </Form.Group>
 
@@ -132,16 +154,31 @@ class GiftAdd extends Component {
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Prix (en Euros)</Form.Label>
-            <Form.Control type="prix" placeholder="Prix" readOnly={!canEdit} defaultValue={detail.prix} ref={(input) => this.getPrix = input}/>
+            {canEdit ? (
+              <Form.Control type="prix" placeholder="Prix" readOnly={!canEdit} defaultValue={detail.prix} ref={(input) => this.getPrix = input}/>
+            ) : (
+              <>:{" "}{detail.prix}</>
+            )}
           </Form.Group>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Pour</Form.Label>
-            <Form.Control as="select" type="name" placeholder="Pour" readOnly={!canEdit} defaultValue={detail.target_beneficiary.id} ref={(input) => this.getTargetBeneficiary = input}>
-            {this.props.beneficiary.map((value, index) => <option value={value.id}>{value.nickname}</option>)}
-            </Form.Control>
-          </Form.Group>
+            {detail.target_beneficiary.id == 0 ? (
+              <Form.Control as="select" type="name" placeholder="Pour" readOnly={!canEdit} ref={(input) => this.getTargetBeneficiary = input} onChange={this.handleSelectionOfPour}>
+              {this.props.beneficiary.map((value, index) => <option value={value.id}>{value.nickname}</option>)}
+              </Form.Control>
+            ) : (
+              <>:{" "}{detail.target_beneficiary.nickname}</>
+            )}
 
+          </Form.Group>
+          {this.displayOptionConfidentielle ? (
+            <Form.Group controlId="formBasicCheckbox">
+              <Form.Check type="switch" label="Garder ce cadeau confidentiel (ne sera pas visible pour le beneficiaire)." onClick={this.handleConfidentielClick} value={this.props.gift.confidentiel} />
+            </Form.Group>
+          ) : (
+            <></>
+          )}
 
             {canEdit ? (
               detail.id ? (
@@ -175,7 +212,6 @@ class GiftAdd extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        displayAlert: state,
         gift: state.gift,
         beneficiary: state.beneficiary,
     }

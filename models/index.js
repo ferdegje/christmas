@@ -43,6 +43,7 @@ Gift.init({
   description: DataTypes.STRING,
   url: DataTypes.STRING,
   prix: DataTypes.DECIMAL,
+  confidentiel: DataTypes.BOOLEAN,
   user: {
     type: Sequelize.STRING,
     references: {
@@ -79,6 +80,28 @@ Comment.init({
     }
   }
 }, { sequelize, modelName: 'comment' });
+
+export class Donation extends Model {}
+Donation.init({
+  amount: DataTypes.INTEGER,
+  user: {
+    type: Sequelize.STRING,
+    references: {
+      model: User,
+      key: 'identifiant',
+    },
+    unique: 'userAndGift',
+  },
+  gift: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Gift,
+      key: 'id',
+    },
+    unique: 'userAndGift',
+  }
+}, { sequelize, modelName: 'donation' });
+
 
 const User_Beneficiaries = sequelize.define('User_Beneficiaries', {}, { timestamps: false });
 Beneficiary.belongsToMany(User, { through: User_Beneficiaries });

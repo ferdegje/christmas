@@ -46,6 +46,9 @@ export function* addedGift(action) {
 }
 
 export function* updatedGift(action) {
+  if (!action.id) {
+    return;
+  }
    try {
       const url = `${apiEndpoint}/${action.id}`;
       console.log('>>>GIFT_UPDATE_REQUESTED.action', JSON.stringify(action.data, null, 2))
