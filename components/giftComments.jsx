@@ -52,7 +52,7 @@ class GiftComments extends Component {
             <Tab eventKey="private" title="Secrets">
               <br />
               La conversation ci dessous est invisible a {this.props.gift.detail.target_beneficiary.users.map(k => k.name).join(",")}.
-
+              <CommentsList type="private" />
             </Tab>
           </Tabs>
         </>
