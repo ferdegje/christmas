@@ -29,7 +29,7 @@ class GiftList extends Component {
   }
 
   render() {
-    console.log(">>this.props.gift", JSON.stringify(this.props.gift, null, 2));
+    // console.log(">>this.props.gift", this.props.gift);
     if (this.props.gift.list) {
       return (
         <CardColumns>

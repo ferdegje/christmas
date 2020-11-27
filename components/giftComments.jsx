@@ -25,7 +25,7 @@ import CommentsList from './commentsList';
 
 class GiftComments extends Component {
   componentDidMount() {
-    this.props.dispatch({type: 'COMMENT_LIST_REQUESTED', gift: this.props.gift.details.id});
+    this.props.dispatch({type: 'COMMENT_LIST_REQUESTED', gift: this.props.gift.detail.id});
   }
 
   setKey = (k) => {
@@ -35,9 +35,9 @@ class GiftComments extends Component {
   render() {
     // console.log(">>GiftComments.props", JSON.stringify(this.props, null, 2));
 
-    if (this.props.gift.details) {
+    if (this.props.gift.detail) {
 
-      const enableGifting = !this.props.gift.details.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
+      const enableGifting = !this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
       return (
         <>
           <Tabs
@@ -47,12 +47,12 @@ class GiftComments extends Component {
           >
             <Tab eventKey="public" title="Visible a tous">
               <br />
-              <CommentsList comments={this.props.comments} user={this.props.user} gift={this.props.gift} type="public" />
+              <CommentsList type="public" />
             </Tab>
             <Tab eventKey="private" title="Secrets">
               <br />
-              La conversation ci dessous est invisible a {this.props.gift.details.target_beneficiary.users.map(k => k.name).join(",")}.
-              <CommentsList comments={this.props.comments} user={this.props.user} gift={this.props.gift} type="private" />
+              La conversation ci dessous est invisible a {this.props.gift.detail.target_beneficiary.users.map(k => k.name).join(",")}.
+
             </Tab>
           </Tabs>
         </>
@@ -71,7 +71,9 @@ class GiftComments extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        comments: state.comments
+        comments: state.comments,
+        gift: state.gift,
+        user: state.user,
     }
 }
 

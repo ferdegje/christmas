@@ -3,7 +3,6 @@ const CommentReducer = (state = [], action) => {
       case 'COMMENT_ADD_REQUESTED':
         return {...state, updateOrCreate: "attempt"}
       case 'COMMENT_ADD_SUCCESS':
-        // console.log(">>COMMENT_ADD_SUCCESS.action", JSON.stringify(action, null, 2))
         var list = state.list;
         list.push(action.data);
         return {...state, list, updateOrCreate: "success" };
@@ -12,11 +11,9 @@ const CommentReducer = (state = [], action) => {
       case 'COMMENT_UPDATE_REQUESTED':
         return {...state, updateOrCreate: "attempt"}
       case 'COMMENT_LIST_SUCCESS':
-        // console.log("Received COMMENT_LIST_SUCCESS");
-        // console.log(">>COMMENT_LIST_SUCCESS.action", JSON.stringify(action, null, 2))
         return {...state, list: action.data};
       case 'COMMENT_DELETE_SUCCESS':
-        console.log(">>COMMENT_DELETE_SUCCESS.action", JSON.stringify(action, null, 2))
+        console.log(">>COMMENT_DELETE_SUCCESS.action", action)
         if (state.list) {
           state.list = state.list.filter(item => item.id != action.id);
         }

@@ -21,6 +21,6 @@ export default function* rootSaga() {
   yield takeEvery("GIFT_DETAIL_REQUESTED", fetchDetailsGift);
   yield takeEvery("COMMENT_LIST_REQUESTED", fetchCOMMENT);
   yield takeEvery("COMMENT_DELETE_REQUESTED", deletedCOMMENT);
-  yield takeEvery("COMMENT_ADD_REQUESTED", addedCOMMENT);
+  yield takeLatest("COMMENT_ADD_REQUESTED", addedCOMMENT);
   yield takeEvery("COMMENT_UPDATE_REQUESTED", updatedCOMMENT);
 }

@@ -1,8 +1,5 @@
 const beneficiaryReducer = (state = [], action) => {
   switch(action.type) {
-      case 'USER_UPDATE_SUCCESS':
-        console.log("Received USER_UPDATE_SUCCESS");
-        return {displayAlert: true}
       default:
         return state;
     }

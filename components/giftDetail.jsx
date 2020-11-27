@@ -50,7 +50,7 @@ class GiftDetail extends Component {
           <Row>
             <Col>Give</Col>
             <Col>
-              <GiftComments gift={giftAddProps} user={this.props.user} />
+              <GiftComments />
             </Col>
           </Row>
         </Container>

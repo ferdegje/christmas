@@ -25,19 +25,20 @@ class CommentsList extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log(">>>this.props.comments.updateOrCreate", this.props.comments.updateOrCreate);
     const message = this.getMessage.value;
     const hidden = this.props.type=="public" ? false:true;
     const data = {
       message,
       hidden,
-      gift: this.props.gift.details.id,
+      gift: this.props.gift.detail.id,
     }
     console.log("About to send the event");
     console.log(data);
     this.props.dispatch({
       type:'COMMENT_ADD_REQUESTED',
-      data});
-    this.getMessage.value = '';
+      data
+    });
   }
 
   handleClose = (e, id) => {
@@ -54,12 +55,25 @@ class CommentsList extends Component {
 
 
   render() {
+    var previous = "";
+    var listeDedoublonnee = [];
+    for (var k in this.props.comments.list) {
+      if (this.props.comments.list[k].message+this.props.comments.list[k].user.identifiant == previous) {
+        console.log(`Comment ${this.props.comments.list[k].id} est en double`);
+        this.props.dispatch({
+          type:'COMMENT_DELETE_REQUESTED',
+          id: this.props.comments.list[k].id
+        })
+      } else {
+        listeDedoublonnee.push(this.props.comments.list[k]);
+        previous = this.props.comments.list[k].message+this.props.comments.list[k].user.identifiant;
+      }
+    }
     // console.log(">>CommentsList.props", JSON.stringify(this.props, null, 2));
-
-    if (this.props.comments && this.props.comments.list) {
+    if (listeDedoublonnee) {
       return (
         <>
-          {this.props.comments.list.filter(item => (item.hidden == true && this.props.type == "private")||(item.hidden == false && this.props.type == "public")).map(item => (
+          {listeDedoublonnee.filter(item => (item.hidden == true && this.props.type == "private")||(item.hidden == false && this.props.type == "public")).map(item => (
             <Toast onClose={(e) => this.handleClose(e, item.id)}>
               <ToastHeader closeButton="false">
                 <img
@@ -87,9 +101,11 @@ class CommentsList extends Component {
       );
     } else {
       return (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </>
       )
     }
 
@@ -98,7 +114,9 @@ class CommentsList extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        // commentsS: state.comments
+        comments: state.comments,
+        gift: state.gift,
+        user: state.user,
     }
 }
 

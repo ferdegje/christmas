@@ -32,6 +32,7 @@ export function* deletedCOMMENT(action) {
 }
 
 export function* addedCOMMENT(action) {
+  console.log("Tagreb");
    try {
       const url = `${apiEndpoint}`;
       const body = JSON.stringify(action.data)
