@@ -1,5 +1,7 @@
 import auth0 from '../../../lib/auth0';
 import {Beneficiary, User, Gift, Comment} from '../../../models';
+const { Op } = require('sequelize')
+import moment from 'moment';
 
 export default async function me(req, res) {
   const session = await auth0.getSession(req);
@@ -45,6 +47,18 @@ export default async function me(req, res) {
     case 'POST':
       const objPayload = {...req.body, user: user.identifiant}
       console.log(objPayload);
+      const lastTwoSecs = await Comment.findAll({
+        where: {
+          createdAt: {
+            [Op.gte]: moment().subtract(5, 'seconds').toDate()
+          }
+        }
+      });
+      console.log(">>>lastTwoSecs", JSON.stringify(lastTwoSecs, null, 2))
+      if (lastTwoSecs.length > 0) {
+          res.status(401).end("This request has been throttled")
+          return
+      }
       const a = await Comment.create(objPayload);
       a.user = user;
       let answer = {

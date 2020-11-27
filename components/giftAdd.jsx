@@ -75,7 +75,7 @@ class GiftAdd extends Component {
       {canEdit ? (
         detail.id ? (
           <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            {this.props.gift.detail.title} - Mise a jour
+            {this.props.gift.detail.title} - <b>Mise a jour</b>
           </Accordion.Toggle>
         ) : (
           <Accordion.Toggle as={Button} variant="link" eventKey="0">

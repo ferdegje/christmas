@@ -15,7 +15,6 @@ const beneficiaryReducer = (state = [], action) => {
         console.log(action);
         return state.map((item)=>item.id === action.data.id ? {...item,nickname:action.data.nickname,editing:false}:item)
       default:
-        console.log(action);
         return state;
     }
 }

@@ -10,6 +10,10 @@ import CardColumns from 'react-bootstrap/CardColumns';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import Badge from 'react-bootstrap/Badge';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import GiftAdd from './giftAdd';
 import GiftComments from './giftComments';
 
@@ -42,7 +46,14 @@ class GiftDetail extends Component {
           <title>({this.props.detail.target_beneficiary.nickname}) {this.props.detail.title}</title>
         </Head>
         <GiftAdd gift={giftAddProps} user={this.props.user} />
-        <GiftComments gift={giftAddProps} user={this.props.user} />
+        <Container>
+          <Row>
+            <Col>Give</Col>
+            <Col>
+              <GiftComments gift={giftAddProps} user={this.props.user} />
+            </Col>
+          </Row>
+        </Container>
       </>;
     } else {
       return (

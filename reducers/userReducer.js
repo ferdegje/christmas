@@ -4,7 +4,6 @@ const beneficiaryReducer = (state = [], action) => {
         console.log("Received USER_UPDATE_SUCCESS");
         return {displayAlert: true}
       default:
-        console.log(action);
         return state;
     }
 }
