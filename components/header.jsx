@@ -26,7 +26,6 @@ const Header = () => {
               (user ? (
                 <>
                   <Nav.Link href="/list">Cadeaux</Nav.Link>
-                  <Nav.Link href="/beneficiaries">Beneficiaires</Nav.Link>
                 </>
               ) : (
                 <></>

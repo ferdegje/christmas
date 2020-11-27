@@ -23,14 +23,20 @@ export default async function me(req, res) {
     case 'GET':
       const orderBy = req.query.order || "id";
       try {
+        var where = {};
+        if (req.query.gift) {
+          where.gift = req.query.gift
+        }
+        if (req.query.user) {
+          where.user = req.query.user
+        }
         const donations = await Donation.findAll({
           order: [[orderBy, 'DESC']],
-          where: {
-            gift: req.query.gift
-          }
+          where
         });
         const allUsers = await User.findAll();
         const allGifts = await Gift.findAll();
+        const allBeneficiaries = await Beneficiary.findAll({includes: User});
         const resultValues = donations
           .map(item => {
             item.user = allUsers.filter(a => a.identifiant==item.user)[0];
@@ -38,7 +44,9 @@ export default async function me(req, res) {
             return item;
           })
           .map(item => {
-            item.gift = allGifts.filter(a => a.id==item.gift)[0];
+            var gift = allGifts.filter(a => a.id==item.gift)[0]
+            gift.target_beneficiary = allBeneficiaries.filter(a=>a.id==gift.target_beneficiary)[0];
+            item.gift = gift;
             // console.log(">>>usero", JSON.stringify(usero, null, 2))
             return item;
           });

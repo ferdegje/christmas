@@ -5,7 +5,11 @@ const keywordAction = "DONATION";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 export function* fetchDonation(action) {
-  let query = `gift=${action.gift}`;
+  let query = [];
+  for (var k in action) {
+    query.push(`${k}=${action[k]}`)
+  }
+  query = query.join("&");
    try {
       const data = yield fetch(`${apiEndpoint}?${query}`).then(response => response.json(), );
       yield put({type: `${keywordAction}_LIST_SUCCESS`, data: data});
