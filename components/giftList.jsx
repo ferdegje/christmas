@@ -33,7 +33,7 @@ class GiftList extends Component {
     if (this.props.gift.list) {
       return (
         <CardColumns>
-          {this.props.gift.list.filter(x=>(!x.confidentiel)||!x.target_beneficiary.users.map(x=>x.identifiant).includes(this.props.targetUser.identifiant)).map((item) => (
+          {this.props.gift.list.filter(x=>(!x.confidentiel)||(x.target_beneficiary.users && !x.target_beneficiary.users.map(x=>x.identifiant).includes(this.props.targetUser.identifiant))).map((item) => (
               <Card>
                 {item && item.picture ? (
                     <Card.Img variant="top" src={item.picture} />
