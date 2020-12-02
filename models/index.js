@@ -99,6 +99,7 @@ Donation.init({
       key: 'id',
     },
     unique: 'userAndGift',
+    onDelete: 'CASCADE',
   }
 }, { sequelize, modelName: 'donation' });
 

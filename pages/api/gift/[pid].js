@@ -1,5 +1,5 @@
 import auth0 from '../../../lib/auth0';
-import {Beneficiary, User, Gift} from '../../../models';
+import {Beneficiary, User, Gift, Donation, Comment} from '../../../models';
 
 export default async function me(req, res) {
   const {
@@ -59,6 +59,18 @@ export default async function me(req, res) {
       res.status(200).end(JSON.stringify(item, null, 2));
       break;
     case 'DELETE':
+      const c = await Comment.findAll({
+        where: {
+          gift: item.id
+        }
+      });
+      c.map(item => item.destroy());
+      const d = await Donation.findAll({
+        where: {
+          gift: item.id
+        }
+      });
+      d.map(item => item.destroy());
       await item.destroy();
       res.status(200).end("Deleted")
       break;
