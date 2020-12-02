@@ -75,7 +75,7 @@ class DonationsToDate extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.donation.list.map(item => (
+            {this.props.donation.list.filter(item=>item.user.identifiant==this.props.user.identifiant).map(item => (
               <tr>
                 <td><Moment fromNow ago locale="fr">{item.updatedAt}</Moment></td>
                 <td>{item.gift.target_beneficiary && item.gift.target_beneficiary.nickname}</td>
@@ -85,7 +85,7 @@ class DonationsToDate extends Component {
             ))}
             <tr>
               <td colSpan="3">Cout total...</td>
-              <td>{this.props.donation.list.map(x=>x.amount).reduce((a, b) => parseInt(a) + parseInt(b), 0)} Euros</td>
+              <td>{this.props.donation.list.filter(item=>item.user.identifiant==this.props.user.identifiant).map(x=>x.amount).reduce((a, b) => parseInt(a) + parseInt(b), 0)} Euros</td>
             </tr>
 
 
