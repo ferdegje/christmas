@@ -78,7 +78,7 @@ class DonationsToDate extends Component {
             {this.props.donation.list.map(item => (
               <tr>
                 <td><Moment fromNow ago locale="fr">{item.updatedAt}</Moment></td>
-                <td>{item.gift.target_beneficiary.nickname}</td>
+                <td>{item.gift.target_beneficiary && item.gift.target_beneficiary.nickname}</td>
                 <td>{item.gift.description}</td>
                 <td>{item.amount}</td>
               </tr>
