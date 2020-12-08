@@ -76,16 +76,18 @@ class BeneficiariesToDate extends Component {
             {this.props.beneficiary.filter(x=>x.user!=this.props.user.identifiant).map(item => (
               <tr>
                 <td>
-                  {item.nickname}
-                  {item.user ? (
-                    <></>
-                  ) : (
-                    <>{" "}(géré par {item.users.map(x=>x.name).join(",")})</>
-                  )}
+                  <a href={"/list?beneficiary="+item.id}>
+                    {item.nickname}
+                    {item.user ? (
+                      <></>
+                    ) : (
+                      <>{" "}(géré par {item.users.map(x=>x.name).join(",")})</>
+                    )}
+                  </a>
                 </td>
                 <td>
                   {this.props.donation.list.filter(x=>x.user.identifiant==this.props.user.identifiant).filter(x=>(x.gift.target_beneficiary && x.gift.target_beneficiary.id==item.id)).length == 0 ? (
-                    <>Rien pour l'instant. <a href={"/list?beneficiary="+item.id}>Voir sa liste</a></>
+                    <>Tu n'as pas de cadeau pour cette personne pour l'instant.</>
                   ) : (
                     <ul>
                       {this.props.donation.list.filter(x=>x.user.identifiant==this.props.user.identifiant).filter(x=>(x.gift.target_beneficiary && x.gift.target_beneficiary.id==item.id)).map(oneDonation=> (
