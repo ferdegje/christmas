@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import { useRouter } from 'next/router'
 
 import EditBeneficiary from './editBeneficiary.jsx';
 import Alert from 'react-bootstrap/Alert';
@@ -13,6 +14,7 @@ import Badge from 'react-bootstrap/Badge';
 class GiftList extends Component {
   componentDidMount() {
     this.props.dispatch({type: 'GIFT_LIST_REQUESTED', targetUser: this.props.targetUser});
+
   }
 
   handleSubmit = (e) => {
@@ -28,12 +30,18 @@ class GiftList extends Component {
     this.getNickname.value = '';
   }
 
+
   render() {
-    // console.log(">>this.props.gift", this.props.gift);
+    console.log(">>this.props.gift", this.props.gift);
+
     if (this.props.gift.list) {
+      const emptyList = this.props.gift.list.filter(x=>(this.props.beneficiary=="")||(this.props.beneficiary==x.target_beneficiary.id)).length == 0;
+      if (emptyList) {
+        return <div>Cette liste est vide pour l'instant</div>
+      }
       return (
         <CardColumns>
-          {this.props.gift.list.filter(x=>(!x.confidentiel)||(x.target_beneficiary.users && !x.target_beneficiary.users.map(x=>x.identifiant).includes(this.props.targetUser.identifiant))).map((item) => (
+          {this.props.gift.list.filter(x=>(this.props.beneficiary=="")||(this.props.beneficiary==x.target_beneficiary.id)).filter(x=>(!x.confidentiel)||(x.target_beneficiary.users && !x.target_beneficiary.users.map(x=>x.identifiant).includes(this.props.targetUser.identifiant))).map((item) => (
               <Card>
                 {item && item.picture ? (
                     <Card.Img variant="top" src={item.picture} />
