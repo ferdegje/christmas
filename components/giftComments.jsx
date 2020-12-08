@@ -33,7 +33,7 @@ class GiftComments extends Component {
   }
 
   render() {
-    // console.log(">>GiftComments.props", this.props);
+    console.log(">>GiftComments.props", this.props);
 
     if (this.props.gift.detail) {
       const enableGifting = !this.props.gift.detail.target_beneficiary.users.map(item => item.identifiant).includes(this.props.user.identifiant);
@@ -44,10 +44,15 @@ class GiftComments extends Component {
             activeKey={this.key}
             onSelect={(k) => this.setKey(k)}
           >
-            <Tab eventKey="public" title="Visible a tous">
-              <br />
-              <CommentsList type="public" />
-            </Tab>
+            {this.props.gift.detail.confidentiel ? (
+              <></>
+            ) : (
+              <Tab eventKey="public" title="Visible a tous">
+                <br />
+                <CommentsList type="public" />
+              </Tab>
+            )}
+
             <Tab eventKey="private" title="Secrets">
               {(this.props.gift && this.props.gift.detail && this.props.user && this.props.gift.detail.target_beneficiary.users.filter(x=>x.identifiant==this.props.user.identifiant).length != 0) ? (
                 <>Cette conversation ne vous est pas accessible car le cadeau est pour vous ou pour un profil que vous controlez.</>
