@@ -32,7 +32,7 @@ class GiftList extends Component {
 
 
   render() {
-    console.log(">>this.props.gift", this.props.gift);
+    console.log(">>this.props", this.props);
 
     if (this.props.gift.list) {
       const emptyList = this.props.gift.list.filter(x=>(this.props.beneficiary=="")||(this.props.beneficiary==x.target_beneficiary.id)).length == 0;
