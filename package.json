@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^0.16.0",
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^5.0.0",
     "dotenv": "^8.2.0",
     "fs": "^0.0.1-security",
     "html-metadata-parser": "^1.0.3",
